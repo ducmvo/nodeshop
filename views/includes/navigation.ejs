@@ -1,0 +1,15 @@
+<header class="main-header">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">My Shop</a>          
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item <%= path==="/" ? "active" : "" %>">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item <%= path==="/add-product" ? "active" : "" %>">
+          <a class="nav-link" href="/add-product">Add Product</a>
+        </li>
+      </ul>
+    </nav>
+</header>
+
+
