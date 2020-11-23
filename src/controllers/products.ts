@@ -1,16 +1,17 @@
-const Product = require('../models/product');
+import { RequestHandler } from 'express';
+import Product from '../models/product';
 
-exports.getAddProduct = (req, res, next) => {
+export const getAddProduct: RequestHandler = (req, res) => {
 	res.render('add-product', { pageTitle: 'Add Product', path: '/add-product' });
 };
 
-exports.postAddProduct = (req, res, next) => {
+export const postAddProduct: RequestHandler = (req, res) => {
     const product = new Product(req.body.title, req.body.price);
     product.save()
 	res.redirect('/');
 }
 
-exports.getProducts = (req, res, next) => {
+export const getProducts: RequestHandler = (req, res) => {
     const products = Product.fetchAll()
 	res.render('shop', {products: products, pageTitle: "Shop", path:"/"})
 };
