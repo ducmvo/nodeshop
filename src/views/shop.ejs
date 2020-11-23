@@ -2,10 +2,10 @@
 <%- include('includes/navigation.ejs') %>
 
 <main class='container my-3'>
-    <div class="card-deck">
+    <div class="card-columns">
         <% if (products.length>0) { %>
             <% products.map((product)=> { %>
-                <div class="card my-3" style="width: 18rem;">
+                <div class="card my-3">
                     <div class="card-body">
                         <h5 class="card-title" style="color: rgb(150, 2, 79) !important;"><%= product.title %></h5>
                         <h6 class="card-subtitle mb-2 text-muted" style="color: green !important;">$<%= product.price %></h6>

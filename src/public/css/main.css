@@ -2,3 +2,18 @@
     color: rgb(255, 183, 0);
 }
 
+.card_columns {
+    column-count: 1;
+}
+
+@media (min-width:768px) {
+    .card_columns {
+        column-count: 2;
+    }
+}
+
+@media (min-width:1200px) {
+    .card_columns {
+        column-count: 3;
+    }
+}
