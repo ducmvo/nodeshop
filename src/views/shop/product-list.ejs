@@ -1,0 +1,38 @@
+<%- include('../includes/head.ejs') %>   
+<%- include('../includes/navigation.ejs') %>
+
+<div class="container mt-5">
+    <h3>Admin Panel</h3>
+</div>
+<main class='container my-3'>
+    <div class="card-columns">
+        <% if (products.length>0) { %>
+            <% products.map((product)=> { %>
+                <div class="card my-3 product-card">
+                    <img class="card-img-top mt-2" src="<%= product.image %>" alt=" Product card" onerror="this.onerror=null;this.src='https://image.freepik.com/free-psd/paper-coffee-bags-mockup_58466-11166.jpg'">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: rgb(150, 2, 79) !important;"><%= product.title %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted" style="color: green !important;">$<%= product.price %></h6>
+                        <p class="card-text">
+                           <%= product.description %>
+                        </p>
+                        <a href="/" class="card-link">
+                            Detail
+                        </a>
+
+                        <form action="/admin/add-to-cart" method="POST">
+                            <a type='submit' class="card-link">
+                                Add to cart
+                            </a>
+                        </form>
+                       
+                    </div>
+                </div>
+        <% })} else { %>
+            <h4>No Product Found</h4>
+        <% } %>
+    </div>
+    
+</main>
+
+<%- include('../includes/end.ejs') %>
