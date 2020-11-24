@@ -3,6 +3,7 @@ import path from 'path';
 import rootDir from '../util/path';
 
 export interface IProduct {
+	id: string;
 	title: string;
 	price: string;
 	description: string;
@@ -25,6 +26,7 @@ const retrieveData = (callback: Callback): void => {
 
 const saveData = (instance: IProduct) => {
 	retrieveData((products) => {
+		instance.id = Math.random().toString();
 		if (!instance.image) {
 			instance.image =
 				'https://image.freepik.com/free-psd/paper-coffee-bags-mockup_58466-11166.jpg';
@@ -37,18 +39,33 @@ const saveData = (instance: IProduct) => {
 };
 
 export default class Product {
+	id: string;
 	constructor(
 		public title: string,
 		public price: string,
 		public description: string,
-		public image: string
-	) {}
+		public image: string,
+	) {
+		this.id = Math.random().toString();
+	}
 
 	public save(): void {
 		saveData(this);
 	}
 
 	static fetchAll(callback: Callback): void {
+		retrieveData(callback);
+	}
+
+	static fetchProduct(cb: (product: IProduct| undefined) => void , id: string): void {
+		//retrieveData callback: execute after finish retrieve data
+		const callback = (products: IProduct[]) => {
+			const product = products.find(product=>product.id===id)
+			//fetchProduct callback: execute after find product in the retrieve data
+			//this callback will execute req.render
+			cb(product)
+		}
+
 		retrieveData(callback);
 	}
 }

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
 	getProducts,
+	getProduct,
 	getIndex,
 	getCart,
 	getCheckout,
@@ -12,6 +13,8 @@ const router = Router();
 router.get('/', getIndex);
 
 router.get('/products', getProducts);
+
+router.get('/products/:productId', getProduct);
 
 router.get('/cart', getCart);
 

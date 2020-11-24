@@ -7,7 +7,7 @@ import {
 
 const router = Router();
 
-router.get('/products', getProducts);
+router.get('/list-products', getProducts);
 router.get('/add-product', getAddProduct);
 
 router.post('/product', postAddProduct);
