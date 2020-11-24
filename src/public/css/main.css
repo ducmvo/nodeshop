@@ -17,3 +17,8 @@
         column-count: 3;
     }
 }
+
+.product-card {
+    box-shadow: 1px 1px 12px rgb(210, 210, 210);
+    border-radius: 10px !important;
+}
