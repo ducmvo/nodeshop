@@ -1,1 +1,38 @@
-[{"title":"NodeJS","price":"3"},{"title":"Javascript","price":"79"},{"title":"Django","price":"123","dataPath":"/Users/duckha/Desktop/NodeJS/data/products.json"},{"title":"ReactJS","price":"999","dataPath":"/Users/duckha/Desktop/NodeJS/data/products.json"},{"title":"C++","price":"10","dataPath":"/Users/duckha/Desktop/NodeJS/data/products.json"}]
+[
+	{
+		"title": "San Carlos",
+		"price": "23",
+		"description": "A lingering cranberry sweet-tart acidity stands out against this coffee's dense, fudgy sweetness.",
+		"image": "https://res.cloudinary.com/roastcollective/image/upload/h_1600,w_1600,f_jpg,fl_progressive:steep,q_auto:good/v1603120617/solidus/rshwoyjyuvp6usz8pljr.png"
+	},
+	{
+		"title": "Gotham Blend",
+		"price": "18",
+		"description": "Extra dark, rich, and full of chocolatey indulgence. It may not be the coffee we deserve, but it's definitely the coffee we need right now.",
+		"image": "https://res.cloudinary.com/roastcollective/image/upload/h_1600,w_1600,f_jpg,fl_progressive:steep,q_auto:good/v1535062180/solidus/efxz3rdclvlmndamvh17.png"
+	},
+	{
+		"title": "Emporium House Blend",
+		"price": "18",
+		"description": "Coffee should bring people together. This blend manages to unite three distinctly delicious single origins to create a truly harmonious coffee. Complex but approachable, no matter how you brew it. (Formerly known as Spicewood 71.)",
+		"image": "https://res.cloudinary.com/roastcollective/image/upload/h_1600,w_1600,f_jpg,fl_progressive:steep,q_auto:good/v1536102436/solidus/zj6u3jdsscevlpnjrpfg.png"
+	},
+	{
+		"title": "Organic Toketee",
+		"price": "17",
+		"description": "You’re fancy, huh? So is this elevated take on the classic drip, blend. It’s carefully curated, seasonally rotating, and of course—cultured.",
+		"image": "https://res.cloudinary.com/roastcollective/image/upload/h_1600,w_1600,f_jpg,fl_progressive:steep,q_auto:good/v1546537150/solidus/ymlkupbu9vt8gepigank.png"
+	},
+	{
+		"title": "Oscar Fernandez",
+		"price": "22",
+		"description": "A long-lasting blood orange acidity plays beautifully with this coffee's notes of black tea sweetened with wildflower honey.",
+		"image": "https://res.cloudinary.com/roastcollective/image/upload/h_1600,w_1600,f_jpg,fl_progressive:steep,q_auto:good/v1605231460/solidus/iced5p4ei06tkxmy5jhp.png"
+	},
+	{
+		"title": "Burundi",
+		"price": "18",
+		"description": "Big and bold, this rich coffee offers plenty of dark sweetness: think cocoa or raisin. Perfect on its own, or with a splash of your milk of choice.",
+		"image": "https://res.cloudinary.com/roastcollective/image/upload/h_1600,w_1600,f_jpg,fl_progressive:steep,q_auto:good/v1566842604/solidus/n8hptprgvrszpldtz5ai.png"
+	}
+]
