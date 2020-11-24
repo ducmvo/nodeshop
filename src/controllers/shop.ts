@@ -1,37 +1,46 @@
 import { RequestHandler } from 'express';
-import Product from '../models/product';
 import PageInfo from '../models/page';
 import { IProduct } from '../models/product';
+import { cart } from '../models/cart';
+import { fetchProduct, fetchAll } from '../util/data';
 
 export const getProducts: RequestHandler = (req, res) => {
-	const callback = (products: IProduct[]): void => {
-		const pageInfo = new PageInfo('Shop', '/products', {products: products});
+	fetchAll((products: IProduct[]): void => {
+		const pageInfo = new PageInfo('Shop', '/products', { products: products });
 		res.render('shop/product-list', pageInfo);
-	};
-	Product.fetchAll(callback);
+	});
 };
 
-
 export const getProduct: RequestHandler = (req, res) => {
-	const productId = req.params.productId
-	const callback = (product: IProduct|undefined): void => {
-		const pageInfo = new PageInfo('Product Detail', `/products/${productId}`, {product: product});
+	fetchProduct((product: IProduct | undefined): void => {
+		const pageInfo = new PageInfo(
+			'Product Detail',
+			`/products/${req.params.productId}`,
+			{ product: product }
+		);
 		res.render('shop/product-detail', pageInfo);
-	};
-	Product.fetchProduct(callback, productId);
+	}, req.params.productId);
 };
 
 export const getIndex: RequestHandler = (req, res) => {
-	const callback = (products: IProduct[]): void => {
-		const pageInfo = new PageInfo('Home', '/', {products: products});
+	fetchAll((products: IProduct[]): void => {
+		const pageInfo = new PageInfo('Home', '/', { products: products });
 		res.render('shop/index', pageInfo);
-	};
-	Product.fetchAll(callback);
+	});
 };
 
 export const getCart: RequestHandler = (req, res) => {
-	const pageInfo = new PageInfo('Cart', '/cart');
+	const pageInfo = new PageInfo('Cart', '/cart', { cart: cart });
 	res.render('shop/cart', pageInfo);
+};
+
+export const postCart: RequestHandler = (req, res) => {
+	const productId = req.body.productId;
+	fetchProduct((product) => {
+		cart.addItem(productId, product ? +product.price : 0);
+	}, productId);
+
+	res.redirect('/cart');
 };
 
 export const getCheckout: RequestHandler = (req, res) => {
@@ -43,4 +52,3 @@ export const getOrders: RequestHandler = (req, res) => {
 	const pageInfo = new PageInfo('Orders', '/orders');
 	res.render('shop/orders', pageInfo);
 };
-

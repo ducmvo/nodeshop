@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import Product from '../models/product';
 import PageInfo from '../models/page';
 import { IProduct } from '../models/product';
+import { fetchAll } from '../util/data';
 
 export const getAddProduct: RequestHandler = (_req, res) => {
 	const pageInfo = new PageInfo('Add Product', '/admin/add-product');
@@ -10,15 +11,22 @@ export const getAddProduct: RequestHandler = (_req, res) => {
 
 export const postAddProduct: RequestHandler = (req, res) => {
 	const body = req.body as IProduct;
-	const product = new Product(body.title, body.price, body.description, body.image);
+	const product = new Product(
+		body.title,
+		body.price,
+		body.description,
+		body.image
+	);
 	product.save();
 	res.redirect('/');
 };
 
 export const getProducts: RequestHandler = (req, res) => {
 	const callback = (products: IProduct[]): void => {
-		const pageInfo = new PageInfo('Listing', '/admin/list-products', { products: products });
+		const pageInfo = new PageInfo('Listing', '/admin/list-products', {
+			products: products
+		});
 		res.render('admin/list-products', pageInfo);
 	};
-	Product.fetchAll(callback);
+	fetchAll(callback);
 };
