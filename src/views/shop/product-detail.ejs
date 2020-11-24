@@ -1,21 +1,27 @@
-<%- include('../includes/head.ejs') %> <%- include('../includes/navigation.ejs')
-%>
+<%- include('../includes/head.ejs') %> 
+<%- include('../includes/navigation.ejs')%>
 
 <main class="container my-3">
-	<div class="card my-3">
+	<h3><%=pageTitle%></h3>
+	<div class="card my-3 product-card">
+		<img class="card-img-top mt-2 mx-auto" style="width: 80%;" src="<%= kwargs.product.image %>" alt=" Product card" onerror="this.onerror=null;this.src='https://image.freepik.com/free-psd/paper-coffee-bags-mockup_58466-11166.jpg'">
 		<div class="card-body">
-			<h5 class="card-title" style="color: rgb(150, 2, 79) !important">
-				<%= product.title %>
-			</h5>
-			<h6 class="card-subtitle mb-2 text-muted" style="color: green !important">
-				$<%= product.price %>
-			</h6>
+			<h5 class="card-title" style="color: rgb(150, 2, 79) !important;"><%= kwargs.product.title %></h5>
+			<h6 class="card-subtitle mb-2 text-muted" style="color: green !important;">$<%= kwargs.product.price %></h6>
 			<p class="card-text">
-				Some quick example text to build on the card title and make up the bulk
-				of the card's content.
+			   <%= kwargs.product.description %>
 			</p>
-			<a href="/" class="card-link"> Home </a>
-			<a href="/add-product" class="card-link"> Add Product </a>
+
+			
+				<a href="/" class="card-link inline mr-3">
+					Shop
+				</a>
+				<form action="/add-to-cart" method="POST" class="inline">
+					<a type='submit' class="card-link inline">
+						Add to cart
+					</a>
+				</form>
+		  
 		</div>
 	</div>
 </main>
