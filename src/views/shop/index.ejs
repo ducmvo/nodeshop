@@ -18,14 +18,15 @@
                         </p>
 
                         
-                            <a href="/products/<%=product.id%>" class="card-link inline mr-3">
+                            <a href="/products/<%=product.id%>" class="btn btn-link inline">
                                 Detail
-                            </a>
-                            <form action="/add-to-cart" method="POST" class="inline">
-                                <a type='submit' class="card-link inline">
-                                    Add to cart
-                                </a>
-                            </form>
+							</a>
+                            <form action="/cart" method="POST" class="inline">
+								<input type="hidden" name="productId" value="<%= product.id %>">
+								<button type='submit' class="btn btn-link inline">
+									Add to cart
+								</button>
+							</form>
                       
                     </div>
                 </div>

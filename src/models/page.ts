@@ -1,12 +1,14 @@
 import { IProduct } from '../models/product';
+import { Cart } from '../models/cart';
 
 interface IPageInfo {
 	pageTitle: string;
 	path: string;
 	kwargs?: {
-		products?: IProduct[],
-		product?: IProduct
-	}
+		products?: IProduct[];
+		product?: IProduct;
+		cart?: Cart;
+	};
 }
 
 export default class PageInfo implements IPageInfo {
@@ -14,10 +16,9 @@ export default class PageInfo implements IPageInfo {
 		public pageTitle: string,
 		public path: string,
 		public kwargs?: {
-			products?: IProduct[],
-			product?: IProduct
+			products?: IProduct[];
+			product?: IProduct;
+			cart?: Cart;
 		}
-	) {
-
-	}
+	) {}
 }

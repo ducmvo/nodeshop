@@ -13,13 +13,14 @@
 			</p>
 
 			
-				<a href="/" class="card-link inline mr-3">
+				<a href="/" class="btn btn-link inline">
 					Shop
 				</a>
-				<form action="/add-to-cart" method="POST" class="inline">
-					<a type='submit' class="card-link inline">
+				<form action="/cart" method="POST" class="inline">
+					<input type="hidden" name="productId" value="<%= kwargs.product.id %>">
+					<button type='submit' class="btn btn-link inline">
 						Add to cart
-					</a>
+					</button>
 				</form>
 		  
 		</div>

@@ -3,7 +3,7 @@
 
 <main class='container mt-5'>
     <h3><%=pageTitle%></h3>
-    
+    <h4>$<%= kwargs.cart.getTotalPrice() %></h4>
 </main>
 
 <%- include('../includes/end.ejs') %>
