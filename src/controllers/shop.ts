@@ -1,18 +1,17 @@
 import { RequestHandler } from 'express';
 import PageInfo from '../models/page';
-import { IProduct } from '../models/product';
 import { cart } from '../models/cart';
 import { fetchProduct, fetchAll } from '../util/data';
 
 export const getProducts: RequestHandler = (req, res) => {
-	fetchAll((products: IProduct[]): void => {
+	fetchAll((products) => {
 		const pageInfo = new PageInfo('Shop', '/products', { products: products });
 		res.render('shop/product-list', pageInfo);
 	});
 };
 
 export const getProduct: RequestHandler = (req, res) => {
-	fetchProduct((product: IProduct | undefined): void => {
+	fetchProduct((product) => {
 		const pageInfo = new PageInfo(
 			'Product Detail',
 			`/products/${req.params.productId}`,
@@ -23,7 +22,7 @@ export const getProduct: RequestHandler = (req, res) => {
 };
 
 export const getIndex: RequestHandler = (req, res) => {
-	fetchAll((products: IProduct[]): void => {
+	fetchAll((products) => {
 		const pageInfo = new PageInfo('Home', '/', { products: products });
 		res.render('shop/index', pageInfo);
 	});

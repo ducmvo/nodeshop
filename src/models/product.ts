@@ -9,17 +9,21 @@ export interface IProduct {
 }
 
 export default class Product {
-	id: string;
+	public id: string;
 	constructor(
 		public title: string,
 		public price: string,
 		public description: string,
 		public image: string
 	) {
-		this.id = Math.random().toString();
+		this.id = '';
 	}
 
 	public save(): void {
+		if (!this.id) {
+			this.id = Math.random().toString();
+		}
 		saveData(this);
 	}
+
 }

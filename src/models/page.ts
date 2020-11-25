@@ -8,6 +8,7 @@ interface IPageInfo {
 		products?: IProduct[];
 		product?: IProduct;
 		cart?: Cart;
+		onEdit?: boolean;
 	};
 }
 
@@ -19,6 +20,7 @@ export default class PageInfo implements IPageInfo {
 			products?: IProduct[];
 			product?: IProduct;
 			cart?: Cart;
+			onEdit?: boolean;
 		}
 	) {}
 }

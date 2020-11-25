@@ -2,11 +2,11 @@ import { RequestHandler } from 'express';
 import Product from '../models/product';
 import PageInfo from '../models/page';
 import { IProduct } from '../models/product';
-import { fetchAll } from '../util/data';
+import { fetchAll, fetchProduct } from '../util/data';
 
 export const getAddProduct: RequestHandler = (_req, res) => {
-	const pageInfo = new PageInfo('Add Product', '/admin/add-product');
-	res.render('admin/add-product', pageInfo);
+	const pageInfo = new PageInfo('Add Product', '/admin/add-product',{onEdit: false});
+	res.render('admin/edit-product', pageInfo);
 };
 
 export const postAddProduct: RequestHandler = (req, res) => {
@@ -21,12 +21,40 @@ export const postAddProduct: RequestHandler = (req, res) => {
 	res.redirect('/');
 };
 
-export const getProducts: RequestHandler = (req, res) => {
-	const callback = (products: IProduct[]): void => {
+export const getEditProduct: RequestHandler = (req, res) => {
+	const productId = req.params.productId
+	fetchProduct((product) => {
+		if(!product) {
+			return res.redirect('/')
+		}
+		const pageInfo = new PageInfo('Edit Product', `/admin/edit-product/${productId}`, { onEdit: true, product: product});
+		res.render('admin/edit-product', pageInfo);
+	}, productId);	
+};
+
+export const postEditProduct: RequestHandler = (req, res) => {
+	const body = req.body
+	const productId = body.productId
+	fetchProduct((product) => {
+		if(product) {
+			const product = new Product(
+				body.title,
+				body.price,
+				body.description,
+				body.image
+			);
+			product.id = productId
+			product.save()
+		} 
+		res.redirect(`/products/${productId}`)
+	}, productId);	
+};
+
+export const getProducts: RequestHandler = (_req, res) => {
+	fetchAll((products: IProduct[]): void => {
 		const pageInfo = new PageInfo('Listing', '/admin/list-products', {
 			products: products
 		});
 		res.render('admin/list-products', pageInfo);
-	};
-	fetchAll(callback);
+	});
 };

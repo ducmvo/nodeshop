@@ -16,15 +16,23 @@ export const retrieveData = (callback: Callback): void => {
 
 export const saveData = (instance: IProduct): void => {
 	retrieveData((products) => {
-		instance.id = Math.random().toString();
 		if (!instance.image) {
 			instance.image =
 				'https://image.freepik.com/free-psd/paper-coffee-bags-mockup_58466-11166.jpg';
-		}
-		products.push(instance);
-		fs.writeFile(dataPath, JSON.stringify(products), (err) => {
-			console.log(err);
-		});
+        }
+        if (!instance.id) {
+            products.push(instance);
+            fs.writeFile(dataPath, JSON.stringify(products), (err) => {
+                console.log(err);
+            });
+        } else {
+            const productIndex = products.findIndex(product => product.id === instance.id)
+            const updatedProducts = [...products]
+            updatedProducts[productIndex] = instance
+            fs.writeFile(dataPath, JSON.stringify(updatedProducts), (err) => {
+                console.log(err);
+            });
+        }
 	});
 };
 
