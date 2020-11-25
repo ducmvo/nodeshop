@@ -13,7 +13,7 @@
   <% const {onEdit} = kwargs %>
   <% if(onEdit){ %>
     <div style="width: 50%;">
-      <img class="card-img-top mt-2 mx-0" style="width: 100%;" src="<%= kwargs.product.image %>" alt=" Product card">
+      <img class="card-img-top mt-2 mx-0" style="width: 100%;" src="<%= kwargs.product.image %>" alt=" Product card" onerror="this.onerror=null;this.src='https://image.freepik.com/free-vector/realistic-blank-paper-coffee-bag-isolated-white-background_92916-86.jpg'">
     </div>
   <% } %>
     <div style="width: 50%;">
