@@ -1,9 +1,36 @@
-<%- include('../includes/head.ejs') %>   
-<%- include('../includes/navigation.ejs') %>
+<%- include('../includes/head.ejs') %> <%- include('../includes/navigation.ejs')
+%>
 
-<main class='container mt-5'>
-    <h3><%=pageTitle%></h3>
-    <h4>$<%= kwargs.cart.getTotalPrice() %></h4>
+<main class="container mt-5">
+	<h3><%=pageTitle%></h3>
+	<hr />
+	<table style="width: 70%">
+		<tr>
+            <th>Title</th>
+			<th>Price</th>
+            <th></th>
+            <th>Quantity</th>
+			<th>Total</th>
+		</tr>
+		<% for (let item of kwargs.cart.items) { %>
+		<tr>
+			<td><%= item.title %></td>
+            <td>$<%= item.price %></td>
+            <td>x</td>
+            <td><%= item.quantity %></td>
+            <td>$<%= +item.price * +item.quantity %></td>
+			
+		</tr>
+		<% } %>
+		<tr>
+            <td>Total</td>
+            <td></td>
+            <td></td>
+            <td></td>
+			<td style="font-weight: bolder;">$<%= kwargs.cart.getTotalPrice() %></td>
+		</tr>
+	</table>
+	<h4></h4>
 </main>
 
 <%- include('../includes/end.ejs') %>
