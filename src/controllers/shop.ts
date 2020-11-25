@@ -12,12 +12,16 @@ export const getProducts: RequestHandler = (req, res) => {
 
 export const getProduct: RequestHandler = (req, res) => {
 	fetchProduct((product) => {
-		const pageInfo = new PageInfo(
-			'Product Detail',
-			`/products/${req.params.productId}`,
-			{ product: product }
-		);
-		res.render('shop/product-detail', pageInfo);
+		if (product) {
+			const pageInfo = new PageInfo(
+				'Product Detail',
+				`/products/${product.id}`,
+				{ product: product }
+			);
+			res.render('shop/product-detail', pageInfo);
+		} else {
+			res.redirect('/');
+		}	
 	}, req.params.productId);
 };
 
@@ -39,9 +43,8 @@ export const postCart: RequestHandler = (req, res) => {
 		if (product) {
 			cart.addItem(product);
 		}
+		res.redirect('/cart');
 	}, productId);
-
-	res.redirect('/cart');
 };
 
 export const getCheckout: RequestHandler = (req, res) => {

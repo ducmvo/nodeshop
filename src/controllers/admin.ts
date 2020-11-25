@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import Product from '../models/product';
+import { cart } from '../models/cart';
 import PageInfo from '../models/page';
 import { IProduct } from '../models/product';
 import { fetchAll, fetchProduct } from '../util/data';
@@ -46,8 +47,13 @@ export const postEditProduct: RequestHandler = (req, res) => {
 			product.id = productId
 			product.save()
 		} 
-			res.redirect(`/products/${productId}`)
-	}, productId);	
+		fetchAll((products)=>{
+			if(products){
+				cart.refresh(products)
+			}
+		})
+		res.redirect(`/products/${productId}`)
+	}, productId);
 };
 
 export const getProducts: RequestHandler = (_req, res) => {

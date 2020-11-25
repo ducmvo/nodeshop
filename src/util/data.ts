@@ -27,15 +27,9 @@ export const saveData = (instance: IProduct): void => {
 	};
 
 	retrieveData((products) => {
-		if (!instance.image) {
-			instance.image =
-				'https://image.freepik.com/free-psd/paper-coffee-bags-mockup_58466-11166.jpg';
-		}
-        
 		findAndReplace(products, instance);
-		
 		fs.writeFile(dataPath, JSON.stringify(products), (err) => {
-			console.log(err);
+			console.log('Error! ',err);
 		});
 	});
 };

@@ -6,7 +6,7 @@ export interface ICartItem extends IProduct {
 
 export class Cart {
 	private static instance: Cart;
-	private items: ICartItem[];
+	public items: ICartItem[];
 	private totalPrice: number;
 
 	private constructor() {
@@ -31,15 +31,33 @@ export class Cart {
 			this.items = [...this.items];
 			this.items[itemIndex] = updatedItem;
 		} else {
-			updatedItem = {  ...product, quantity: 1 };
+			updatedItem = { ...product, quantity: 1 };
 			this.items = [...this.items, updatedItem];
 		}
-
-		this.totalPrice += parseInt(product.price);
 	}
 
 	public getTotalPrice(): number {
+		if (this.items.length > 0) {
+			this.totalPrice = this.items
+				.map((item) => +item.price * +item.quantity)
+				.reduce((total, price) => (total += price));
+		}
 		return this.totalPrice;
+	}
+
+	public refresh = (products: IProduct[]): void => {
+		if (!products) {
+			return;
+		}
+		const updatedItems: ICartItem[] = []
+		for (const item of this.items) {
+			const product = products.find((product) => product.id === item.id)
+			if (product) {
+				const updatedItem = {...product, quantity: item.quantity}
+				updatedItems.push(updatedItem);
+			}
+		}
+		this.items = [...updatedItems];
 	}
 }
 
