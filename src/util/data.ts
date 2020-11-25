@@ -15,24 +15,28 @@ export const retrieveData = (callback: Callback): void => {
 };
 
 export const saveData = (instance: IProduct): void => {
+    
+    const findAndReplace = (arr: IProduct[], item: IProduct) => {
+		const idx = arr.findIndex((i) => i.id === item.id);
+        if (idx!==-1){
+            arr[idx] = item;
+        } else {
+            arr.push(item);
+        }
+        return idx;
+	};
+
 	retrieveData((products) => {
 		if (!instance.image) {
 			instance.image =
 				'https://image.freepik.com/free-psd/paper-coffee-bags-mockup_58466-11166.jpg';
-        }
-        if (!instance.id) {
-            products.push(instance);
-            fs.writeFile(dataPath, JSON.stringify(products), (err) => {
-                console.log(err);
-            });
-        } else {
-            const productIndex = products.findIndex(product => product.id === instance.id)
-            const updatedProducts = [...products]
-            updatedProducts[productIndex] = instance
-            fs.writeFile(dataPath, JSON.stringify(updatedProducts), (err) => {
-                console.log(err);
-            });
-        }
+		}
+        
+		findAndReplace(products, instance);
+		
+		fs.writeFile(dataPath, JSON.stringify(products), (err) => {
+			console.log(err);
+		});
 	});
 };
 

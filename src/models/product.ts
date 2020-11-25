@@ -19,11 +19,12 @@ export default class Product {
 		this.id = '';
 	}
 
-	public save(): void {
+	public save(): IProduct {
 		if (!this.id) {
-			this.id = Math.random().toString();
+			this.id = Math.random().toString().split('.')[1];
 		}
 		saveData(this);
+		return this;
 	}
 
 }

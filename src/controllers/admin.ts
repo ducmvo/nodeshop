@@ -17,8 +17,8 @@ export const postAddProduct: RequestHandler = (req, res) => {
 		body.description,
 		body.image
 	);
-	product.save();
-	res.redirect('/');
+	const instance = product.save();
+	res.redirect(`/products/${instance.id}`)
 };
 
 export const getEditProduct: RequestHandler = (req, res) => {
@@ -46,7 +46,7 @@ export const postEditProduct: RequestHandler = (req, res) => {
 			product.id = productId
 			product.save()
 		} 
-		res.redirect(`/products/${productId}`)
+			res.redirect(`/products/${productId}`)
 	}, productId);	
 };
 

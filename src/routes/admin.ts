@@ -12,7 +12,7 @@ const router = Router();
 router.get('/list-products', getProducts);
 router.get('/add-product', getAddProduct);
 
-router.post('/product', postAddProduct);
+router.post('/add-product', postAddProduct);
 
 router.get('/edit-product/:productId', getEditProduct)
 router.post('/edit-product', postEditProduct)
