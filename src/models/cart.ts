@@ -1,5 +1,6 @@
-export interface ICartItem {
-	id: string;
+import { IProduct } from './product';
+
+export interface ICartItem extends IProduct {
 	quantity: number;
 }
 
@@ -20,8 +21,8 @@ export class Cart {
 		return Cart.instance;
 	}
 
-	public addItem(id: string, price: number): void {
-		const itemIndex = this.items.findIndex((item) => item.id === id);
+	public addItem(product: IProduct): void {
+		const itemIndex = this.items.findIndex((item) => item.id === product.id);
 		const item = this.items[itemIndex];
 		let updatedItem: ICartItem;
 		if (item) {
@@ -30,11 +31,11 @@ export class Cart {
 			this.items = [...this.items];
 			this.items[itemIndex] = updatedItem;
 		} else {
-			updatedItem = { id: id, quantity: 1 };
+			updatedItem = {  ...product, quantity: 1 };
 			this.items = [...this.items, updatedItem];
 		}
 
-		this.totalPrice += price;
+		this.totalPrice += parseInt(product.price);
 	}
 
 	public getTotalPrice(): number {
