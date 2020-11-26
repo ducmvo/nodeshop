@@ -45,19 +45,22 @@ export class Cart {
 		return this.totalPrice;
 	}
 
-	public refresh = (products: IProduct[]): void => {
-		if (!products) {
+	public update = (product: IProduct): void => {
+		//update cart if product properties change
+		if (!product) {
 			return;
 		}
-		const updatedItems: ICartItem[] = []
-		for (const item of this.items) {
-			const product = products.find((product) => product.id === item.id)
-			if (product) {
-				const updatedItem = {...product, quantity: item.quantity}
-				updatedItems.push(updatedItem);
-			}
+		const itemIndex = this.items.findIndex((item) => item.id === product.id);
+		this.items[itemIndex] = {...product, quantity: this.items[itemIndex].quantity};
+	}
+
+	public removeItem = (productId: string): void => {
+		const newItems = this.items.filter((item) => item.id !== productId);
+		this.items = newItems;
+		if (newItems.length<=0) {
+			this.totalPrice = 0;
 		}
-		this.items = [...updatedItems];
+		
 	}
 }
 

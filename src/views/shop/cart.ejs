@@ -3,34 +3,48 @@
 
 <main class="container mt-5">
 	<h3><%=pageTitle%></h3>
-	<hr />
-	<table style="width: 70%">
-		<tr>
-            <th>Title</th>
-			<th>Price</th>
-            <th></th>
-            <th>Quantity</th>
-			<th>Total</th>
-		</tr>
-		<% for (let item of kwargs.cart.items) { %>
-		<tr>
-			<td><%= item.title %></td>
-            <td>$<%= item.price %></td>
-            <td>x</td>
-            <td><%= item.quantity %></td>
-            <td>$<%= +item.price * +item.quantity %></td>
-			
-		</tr>
-		<% } %>
-		<tr>
-            <td>Total</td>
-            <td></td>
-            <td></td>
-            <td></td>
-			<td style="font-weight: bolder;">$<%= kwargs.cart.getTotalPrice() %></td>
-		</tr>
-	</table>
-	<h4></h4>
+    <hr />
+    <div >
+        <table class="table table-striped" style="width: 95%;margin: auto;">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col"></th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let item of kwargs.cart.items) { %>
+                    <tr scope="row">
+                        <td><%= item.title %></td>
+                        <td>$<%= item.price %></td>
+                        <td>x</td>
+                        <td><%= item.quantity %></td>
+                        <td>$<%= +item.price * +item.quantity %></td>
+                        <td>
+                            <form action="/cart-remove-item" method="POST" class="inline">
+                                <input type="hidden" name="productId" value="<%= item.id %>">
+                                <button type='submit' class="btn btn-link inline" style="color: red;">
+                                    remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% } %>
+            </tbody>
+            <tr scope="row">
+                <td>Total</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: bolder; font-size: 1.2rem; color:rgb(12, 80, 123)">$<%= kwargs.cart.getTotalPrice() %></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+	
 </main>
 
 <%- include('../includes/end.ejs') %>

@@ -38,7 +38,7 @@ export const getCart: RequestHandler = (req, res) => {
 };
 
 export const postCart: RequestHandler = (req, res) => {
-	const productId = req.body.productId;
+	const productId: string = req.body.productId;
 	fetchProduct((product) => {
 		if (product) {
 			cart.addItem(product);
@@ -46,6 +46,12 @@ export const postCart: RequestHandler = (req, res) => {
 		res.redirect('/cart');
 	}, productId);
 };
+
+export const removeCartItem: RequestHandler = (req, res) => {
+	const productId: string = req.body.productId;
+	cart.removeItem(productId)
+	res.redirect('/cart');
+}
 
 export const getCheckout: RequestHandler = (req, res) => {
 	const pageInfo = new PageInfo('Checkout', '/checkout');
