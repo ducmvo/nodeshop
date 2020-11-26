@@ -22,6 +22,9 @@ export class Cart {
 	}
 
 	public addItem(product: IProduct): void {
+		if (!product) {
+			return
+		}
 		const itemIndex = this.items.findIndex((item) => item.id === product.id);
 		const item = this.items[itemIndex];
 		let updatedItem: ICartItem;
@@ -51,10 +54,12 @@ export class Cart {
 			return;
 		}
 		const itemIndex = this.items.findIndex((item) => item.id === product.id);
-		this.items[itemIndex] = {...product, quantity: this.items[itemIndex].quantity};
+		if(itemIndex!==-1) {
+			this.items[itemIndex] = {...product, quantity: this.items[itemIndex].quantity};
+		}
 	}
 
-	public removeItem = (productId: string): void => {
+	public removeItem = (productId: number): void => {
 		const newItems = this.items.filter((item) => item.id !== productId);
 		this.items = newItems;
 		if (newItems.length<=0) {

@@ -1,77 +1,73 @@
-import asyncFs from 'fs/promises';
-import { dataPath } from './path';
 import { IProduct } from '../models/product';
 import db from './database';
 
 export type Callback = (products: IProduct[]) => void;
 
-export const retrieveData = async (callback: Callback): Promise<void> => {
+export const dbQuery = async (query: string): Promise<IProduct[]> => {
 	try {
-		const data = await db.execute('SELECT * FROM products')
+		const data = await db.execute(query)
 		const [ rows ] = data;	
 		const products: IProduct[] = JSON.parse(JSON.stringify(rows))
-		callback(products)
+		return products;
 	} catch(err) {
 		console.log(err.message);
-		callback([])
+		return [];
 	}
-
 };
 
-const findAndReplace = (arr: IProduct[], item: IProduct) => {
-	const idx = arr.findIndex((i) => i.id === item.id);
-	if (idx!==-1){
-		arr[idx] = item;
-	} else {
-		arr.push(item);
+export const saveProduct = async (product: IProduct): Promise<void> => {
+	try {
+		const {id, title, price, description, image} = product;
+		const insert = `
+			INSERT INTO products (title, price, description, image)
+			VALUES ('${title}', '${price}', '${description}','${image}');`;
+		const update = `
+			UPDATE products
+			SET title = '${title}', 
+				price = '${price}',
+				description = '${description}',
+				image = '${image}'
+			WHERE id = ${id};`
+		console.log(id?update:insert)
+		await dbQuery(id?update:insert);
+		console.log("Successfully write to database")
+	} catch (err) {
+		console.log(err)
 	}
-	return idx;
 };
 
-const findAndDelete = (arr: IProduct[], id: string) => {
-	return arr.filter((i) => i.id !== id);
+export const deleteProduct = async (productId: number): Promise<void> => {
+	try {
+		const query = `DELETE FROM products where id=${productId};`
+		console.log(query)
+		await dbQuery(query);
+		console.log(`Successfully delete to product ${productId}`)
+	} catch (err) {
+		console.log(err)
+	}
 };
 
-export const saveData = (instance: IProduct): void => {
-	retrieveData((products) => {
-		findAndReplace(products, instance);
-		asyncFs.writeFile(dataPath, JSON.stringify(products))
-			.then(() => {
-				console.log("successfully write to file")
-			})
-			.catch((err) => {
-				console.log('Error! ', err);
-			});
-	});
+export const fetchProduct = async (
+	callback: (product: IProduct) => void,
+	productId: number
+): Promise<void> => {
+	try {
+		const query = `SELECT id, title, price, description, image FROM products WHERE id = ${productId};`
+		const products = await dbQuery(query);
+		callback(products[0])
+	}
+	catch (err) {
+		console.log(err)
+	}
 };
 
-export const deleteData = (id: string): void => {
-	retrieveData((products) => {
-		products = findAndDelete(products, id);
-		asyncFs.writeFile(dataPath, JSON.stringify(products))
-			.then(() => {
-				console.log("successfully write to file")
-			})
-			.catch((err) => {
-				console.log('Error! ', err);
-			});
-	});
-};
-
-export const fetchProduct = (
-	cb: (product: IProduct | undefined) => void,
-	productId: string
-): void => {
-	//retrieveData callback: execute after finish retrieve data
-	const callback = (products: IProduct[]) => {
-		const product = products.find((product) => product.id === productId);
-		//fetchProduct callback: execute after find product in the retrieve data
-		//this callback will do something with the lookup product (eg. execute req.render)
-		cb(product);
-	};
-	retrieveData(callback);
-};
-
-export const fetchAll = (callback: Callback): void => {
-	retrieveData(callback);
+export const fetchAllProducts = async (callback: Callback): Promise<void> => {
+	try {
+		const query = "SELECT * FROM products;"
+		const products = await dbQuery(query);
+		console.log(products)
+		callback(products)
+	} catch (err) {
+		console.log(err)
+	}
 };

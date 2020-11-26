@@ -1,10 +1,10 @@
 import { RequestHandler } from 'express';
 import PageInfo from '../models/page';
 import { cart } from '../models/cart';
-import { fetchProduct, fetchAll } from '../util/data';
+import { fetchProduct, fetchAllProducts } from '../util/data';
 
 export const getProducts: RequestHandler = (req, res) => {
-	fetchAll((products) => {
+	fetchAllProducts((products) => {
 		const pageInfo = new PageInfo('Shop', '/products', { products: products });
 		res.render('shop/product-list', pageInfo);
 	});
@@ -22,11 +22,11 @@ export const getProduct: RequestHandler = (req, res) => {
 		} else {
 			res.redirect('/');
 		}	
-	}, req.params.productId);
+	}, +req.params.productId);
 };
 
 export const getIndex: RequestHandler = (req, res) => {
-	fetchAll((products) => {
+	fetchAllProducts((products) => {
 		const pageInfo = new PageInfo('Home', '/', { products: products });
 		res.render('shop/index', pageInfo);
 	});
@@ -38,7 +38,7 @@ export const getCart: RequestHandler = (req, res) => {
 };
 
 export const postCart: RequestHandler = (req, res) => {
-	const productId: string = req.body.productId;
+	const productId: number = +req.body.productId;
 	fetchProduct((product) => {
 		if (product) {
 			cart.addItem(product);
@@ -48,7 +48,7 @@ export const postCart: RequestHandler = (req, res) => {
 };
 
 export const removeCartItem: RequestHandler = (req, res) => {
-	const productId: string = req.body.productId;
+	const productId: number = +req.body.productId;
 	cart.removeItem(productId)
 	res.redirect('/cart');
 }

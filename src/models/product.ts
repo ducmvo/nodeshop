@@ -1,34 +1,31 @@
-import { saveData, deleteData } from '../util/data';
+import { saveProduct, deleteProduct } from '../util/data';
 
 export interface IProduct {
-	id: string;
+	id: number;
 	title: string;
-	price: string;
+	price: number;
 	description: string;
 	image: string;
 }
 
 export default class Product {
-	public id: string;
+	public id: number;
 	constructor(
 		public title: string,
-		public price: string,
+		public price: number,
 		public description: string,
 		public image: string
 	) {
-		this.id = '';
+		this.id = 0;
 	}
 
-	public save(): IProduct {
-		if (!this.id) {
-			this.id = Math.random().toString().split('.')[1];
-		}
-		saveData(this);
+	public async save(): Promise<IProduct> {
+		await saveProduct(this)
 		return this;
 	}
 
-	static delete(id: string): void {
-		deleteData(id)
+	static delete(id: number): void {
+		deleteProduct(id)
 	}
 
 }
