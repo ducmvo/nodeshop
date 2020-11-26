@@ -46,14 +46,18 @@ export const postEditProduct: RequestHandler = (req, res) => {
 			);
 			product.id = productId
 			product.save()
+			cart.update(product)
 		} 
-		fetchAll((products)=>{
-			if(products){
-				cart.refresh(products)
-			}
-		})
+		
 		res.redirect(`/products/${productId}`)
 	}, productId);
+};
+
+export const postDeleteProduct: RequestHandler = (req, res) => {
+	const productId = req.params.productId
+	Product.delete(productId)
+	cart.removeItem(productId)
+	res.redirect('/admin/list-products')
 };
 
 export const getProducts: RequestHandler = (_req, res) => {

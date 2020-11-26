@@ -1,4 +1,4 @@
-import { saveData } from '../util/data';
+import { saveData, deleteData } from '../util/data';
 
 export interface IProduct {
 	id: string;
@@ -25,6 +25,10 @@ export default class Product {
 		}
 		saveData(this);
 		return this;
+	}
+
+	static delete(id: string): void {
+		deleteData(id)
 	}
 
 }
