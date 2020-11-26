@@ -1,36 +1,58 @@
-import fs from 'fs';
+import asyncFs from 'fs/promises';
 import { dataPath } from './path';
 import { IProduct } from '../models/product';
 
 export type Callback = (products: IProduct[]) => void;
 
-export const retrieveData = (callback: Callback): void => {
-	fs.readFile(dataPath, (err, fileContent) => {
-		if (err) {
-			return callback([]);
-		} else {
-			callback(JSON.parse(fileContent.toString()));
-		}
-	});
+export const retrieveData = async (callback: Callback): Promise<void> => {
+	try {
+		const data = await asyncFs.readFile(dataPath);
+		const  products = JSON.parse(data.toString())
+		callback(products)
+		
+	} catch(err) {
+		console.log(err.message);
+		callback([])
+	}
+};
+
+const findAndReplace = (arr: IProduct[], item: IProduct) => {
+	const idx = arr.findIndex((i) => i.id === item.id);
+	if (idx!==-1){
+		arr[idx] = item;
+	} else {
+		arr.push(item);
+	}
+	return idx;
+};
+
+const findAndDelete = (arr: IProduct[], id: string) => {
+	return arr.filter((i) => i.id !== id);
 };
 
 export const saveData = (instance: IProduct): void => {
-    
-    const findAndReplace = (arr: IProduct[], item: IProduct) => {
-		const idx = arr.findIndex((i) => i.id === item.id);
-        if (idx!==-1){
-            arr[idx] = item;
-        } else {
-            arr.push(item);
-        }
-        return idx;
-	};
-
 	retrieveData((products) => {
 		findAndReplace(products, instance);
-		fs.writeFile(dataPath, JSON.stringify(products), (err) => {
-			console.log('Error! ',err);
-		});
+		asyncFs.writeFile(dataPath, JSON.stringify(products))
+			.then(() => {
+				console.log("successfully write to file")
+			})
+			.catch((err) => {
+				console.log('Error! ', err);
+			});
+	});
+};
+
+export const deleteData = (id: string): void => {
+	retrieveData((products) => {
+		products = findAndDelete(products, id);
+		asyncFs.writeFile(dataPath, JSON.stringify(products))
+			.then(() => {
+				console.log("successfully write to file")
+			})
+			.catch((err) => {
+				console.log('Error! ', err);
+			});
 	});
 };
 
