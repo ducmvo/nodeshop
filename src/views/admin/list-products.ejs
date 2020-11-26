@@ -19,7 +19,7 @@
                         <a href="/admin/edit-product/<%= product.id %>" class="btn btn-link inline">
                             Edit
                         </a>
-                        <form action="/admin/delete-product" method="POST" class="inline">
+                        <form action="/admin/delete-product/<%= product.id %>" method="POST" class="inline">
                             <button type='submit' class="btn btn-link" style="color: red">
                                 Delete
                             </button>
