@@ -1,19 +1,21 @@
 import asyncFs from 'fs/promises';
 import { dataPath } from './path';
 import { IProduct } from '../models/product';
+import db from './database';
 
 export type Callback = (products: IProduct[]) => void;
 
 export const retrieveData = async (callback: Callback): Promise<void> => {
 	try {
-		const data = await asyncFs.readFile(dataPath);
-		const  products = JSON.parse(data.toString())
+		const data = await db.execute('SELECT * FROM products')
+		const [ rows ] = data;	
+		const products: IProduct[] = JSON.parse(JSON.stringify(rows))
 		callback(products)
-		
 	} catch(err) {
 		console.log(err.message);
 		callback([])
 	}
+
 };
 
 const findAndReplace = (arr: IProduct[], item: IProduct) => {
