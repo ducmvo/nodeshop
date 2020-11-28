@@ -1,31 +1,50 @@
-import { saveProduct, deleteProduct } from '../util/data';
+import Sequelize, { Model } from 'sequelize';
+
+import sequelize from '../util/database';
 
 export interface IProduct {
-	id: number;
+	id?: number;
 	title: string;
 	price: number;
 	description: string;
 	image: string;
 }
 
-export default class Product {
-	public id: number;
-	constructor(
-		public title: string,
-		public price: number,
-		public description: string,
-		public image: string
-	) {
-		this.id = 0;
-	}
-
-	public async save(): Promise<IProduct> {
-		await saveProduct(this)
-		return this;
-	}
-
-	static delete(id: number): void {
-		deleteProduct(id)
-	}
-
+class Product extends Model<IProduct> {
+	public id!: number;
+	public title!: string;
+	public price!: number;
+	public description!: string;
+	public image!: string;
 }
+
+Product.init(
+	{
+		id: {
+			type: Sequelize.INTEGER,
+			autoIncrement: true,
+			allowNull: false,
+			primaryKey: true
+		},
+		title: Sequelize.STRING,
+		price: {
+			type: Sequelize.DOUBLE,
+			allowNull: false
+		},
+
+		description: {
+			type: Sequelize.STRING,
+			allowNull: false
+		},
+		image: {
+			type: Sequelize.STRING,
+			allowNull: false
+		}
+	},
+	{
+		tableName: 'products',
+		sequelize
+	}
+);
+
+export default Product;

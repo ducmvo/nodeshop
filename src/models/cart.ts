@@ -1,4 +1,4 @@
-import { IProduct } from './product';
+import Product, { IProduct } from './product';
 
 export interface ICartItem extends IProduct {
 	quantity: number;
@@ -21,7 +21,7 @@ export class Cart {
 		return Cart.instance;
 	}
 
-	public addItem(product: IProduct): void {
+	public addItem(product: Product): void {
 		if (!product) {
 			return
 		}
@@ -34,7 +34,14 @@ export class Cart {
 			this.items = [...this.items];
 			this.items[itemIndex] = updatedItem;
 		} else {
-			updatedItem = { ...product, quantity: 1 };
+			const productValues = {
+				id: product.id,
+				price: product.price,
+				description: product.description,
+				title: product.title,
+				image: product.image
+			}
+			updatedItem = { ...productValues, quantity: 1 };
 			this.items = [...this.items, updatedItem];
 		}
 	}
@@ -48,7 +55,7 @@ export class Cart {
 		return this.totalPrice;
 	}
 
-	public update = (product: IProduct): void => {
+	public update = (product: Product): void => {
 		//update cart if product properties change
 		if (!product) {
 			return;

@@ -1,70 +1,55 @@
-import { IProduct } from '../models/product';
-import db from './database';
+import Product, {IProduct} from '../models/product';
 
-export type Callback = (products: IProduct[]) => void;
-
-export const dbQuery = async (
-	query: string,
-	values: (string | number)[] = []
-): Promise<IProduct[]> => {
+export const saveProduct = async (
+	product: Product
+): Promise<Product | null> => {
 	try {
-		const data = await db.execute(query, values);
-		const [rows] = data;
-		const products: IProduct[] = JSON.parse(JSON.stringify(rows));
-		return products;
+		const instance = await product.save();
+		console.log('Successfully product save to database');
+		return instance;
 	} catch (err) {
-		console.log(err.message);
-		return [];
+		console.log(err);
+		return null;
 	}
 };
 
-export const saveProduct = async (product: IProduct): Promise<void> => {
+export const createProduct = async (
+	product: IProduct
+): Promise<Product | null> => {
 	try {
-		const { id, title, price, description, image } = product;
-		const values = [title, price, description, image];
-		const updateValues = [...values, id];
-		const insert = `
-			INSERT INTO products (title, price, description, image)
-			VALUES (?,?,?,?);`;
-		const update = `
-			UPDATE products
-			SET title = ?, 
-				price = ?,
-				description = ?,
-				image = ?
-			WHERE id = ?;`;
-		await dbQuery(id ? update : insert, id ? updateValues : values);
-		console.log('Successfully write to database');
+		const instance = await Product.create(product);
+		console.log('Successfully insert a new product to database');
+		return instance;
+	} catch (err) {
+		console.log(err);
+		return null;
+	}
+};
+
+export const deleteProduct = async (product: Product): Promise<void> => {
+	try {
+		await product.destroy();
+		console.log('Successfully delete product from database');
 	} catch (err) {
 		console.log(err);
 	}
 };
 
-export const deleteProduct = async (productId: number): Promise<void> => {
+export const fetchProduct = async (
+	productId: number
+): Promise<Product | null> => {
 	try {
-		const query = `DELETE FROM products where id=?;`;
-		console.log(query);
-		await dbQuery(query, [productId]);
-		console.log(`Successfully delete to product ${productId}`);
+		const product = await Product.findByPk(productId);
+		return product;
 	} catch (err) {
 		console.log(err);
+		return null;
 	}
 };
 
-export const fetchProduct = async (productId: number): Promise<IProduct|undefined> => {
+export const fetchAllProducts = async (): Promise<Product[]> => {
 	try {
-		const query = `SELECT id, title, price, description, image FROM products WHERE id = ?;`;
-		const products = await dbQuery(query, [productId]);
-		return products[0];
-	} catch (err) {
-		console.log(err);
-	}
-};
-
-export const fetchAllProducts = async (): Promise<IProduct[]> => {
-	try {
-		const query = 'SELECT * FROM products;';
-		const products = await dbQuery(query);
+		const products = await Product.findAll();
 		return products;
 	} catch (err) {
 		console.log(err);

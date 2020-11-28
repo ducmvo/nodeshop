@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import { get404 } from './controllers/error';
 import adminRoutes from './routes/admin';
 import shopRoutes from './routes/shop';
+import sequelize from './util/database';
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -18,4 +19,7 @@ app.use(shopRoutes);
 
 app.use(get404);
 
-app.listen(3000);
+sequelize
+	.sync()
+	.then(() => app.listen(3000))
+	.catch((err) => console.log(err));
