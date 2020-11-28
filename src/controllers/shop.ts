@@ -3,33 +3,30 @@ import PageInfo from '../models/page';
 import { cart } from '../models/cart';
 import { fetchProduct, fetchAllProducts } from '../util/data';
 
-export const getProducts: RequestHandler = (req, res) => {
-	fetchAllProducts((products) => {
-		const pageInfo = new PageInfo('Shop', '/products', { products: products });
+export const getProducts: RequestHandler = async (req, res) => {
+	const products = await fetchAllProducts();
+	const pageInfo = new PageInfo('Shop', '/products', { products: products });
 		res.render('shop/product-list', pageInfo);
-	});
 };
 
-export const getProduct: RequestHandler = (req, res) => {
-	fetchProduct((product) => {
-		if (product) {
-			const pageInfo = new PageInfo(
-				'Product Detail',
-				`/products/${product.id}`,
-				{ product: product }
-			);
-			res.render('shop/product-detail', pageInfo);
-		} else {
-			res.redirect('/');
-		}	
-	}, +req.params.productId);
+export const getProduct: RequestHandler = async (req, res) => {
+	const product = await fetchProduct(+req.params.productId);
+	if (product) {
+		const pageInfo = new PageInfo(
+			'Product Detail',
+			`/products/${product.id}`,
+			{ product: product }
+		);
+		res.render('shop/product-detail', pageInfo);
+	} else {
+		res.redirect('/');
+	}	
 };
 
-export const getIndex: RequestHandler = (req, res) => {
-	fetchAllProducts((products) => {
-		const pageInfo = new PageInfo('Home', '/', { products: products });
-		res.render('shop/index', pageInfo);
-	});
+export const getIndex: RequestHandler = async (req, res) => {
+	const products = await fetchAllProducts();
+	const pageInfo = new PageInfo('Home', '/', { products: products });
+	res.render('shop/index', pageInfo);
 };
 
 export const getCart: RequestHandler = (req, res) => {
@@ -37,14 +34,13 @@ export const getCart: RequestHandler = (req, res) => {
 	res.render('shop/cart', pageInfo);
 };
 
-export const postCart: RequestHandler = (req, res) => {
+export const postCart: RequestHandler = async (req, res) => {
 	const productId: number = +req.body.productId;
-	fetchProduct((product) => {
-		if (product) {
-			cart.addItem(product);
-		}
-		res.redirect('/cart');
-	}, productId);
+	const product = await fetchProduct(productId);
+	if (product) {
+		cart.addItem(product);
+	}
+	res.redirect('/cart');
 };
 
 export const removeCartItem: RequestHandler = (req, res) => {
